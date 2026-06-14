@@ -34,6 +34,12 @@ supabase/.temp
 dist/
 /lib/
 .env
+.env.local
+.env.development
+.env.staging
+.env.production
+.env.test
+
 *storybook.log
 
 # Shadcn Registry
