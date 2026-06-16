@@ -53,6 +53,7 @@ import {
 } from "./defaultConfiguration";
 import { i18nProvider as defaulti18nProvider } from "../providers/commons/i18nProvider";
 import { StartPage } from "../login/StartPage.tsx";
+import { usePublicBrandingLoader } from "./usePublicBrandingLoader";
 import { useIsMobile } from "@/hooks/use-mobile.ts";
 import { MobileTasksList } from "../tasks/MobileTasksList.tsx";
 import { ContactListMobile } from "../contacts/ContactList.tsx";
@@ -61,6 +62,20 @@ import { CompanyShow } from "../companies/CompanyShow.tsx";
 import { NoteShowPage } from "../notes/NoteShowPage.tsx";
 
 const defaultStore = localStorageStore(undefined, "CRM");
+
+/**
+ * Login entry point that loads public branding (title/logos) from the
+ * anon-readable `configuration_branding` view into the configuration store
+ * before rendering. Used as the Admin `loginPage` so all unauthenticated pages
+ * (login, sign-up, forgot-password) reflect the branding set in Settings.
+ * It lives inside the Admin context (unlike the CRM body), so the react-query
+ * loader has access to the data provider, and it re-runs after logout when the
+ * store is cleared.
+ */
+const StartPageWithBranding = () => {
+  usePublicBrandingLoader();
+  return <StartPage />;
+};
 
 export type CRMProps = {
   dataProvider?: CrmDataProvider;
@@ -225,7 +240,7 @@ export const CRM = ({
       authProvider={wrappedAuthProvider}
       i18nProvider={i18nProvider}
       store={store}
-      loginPage={StartPage}
+      loginPage={StartPageWithBranding}
       requireAuth
       disableTelemetry
       {...rest}

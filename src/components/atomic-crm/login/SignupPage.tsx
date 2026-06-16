@@ -10,12 +10,14 @@ import { Label } from "@/components/ui/label";
 import type { CrmDataProvider } from "../providers/types";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { SignUpData } from "../types";
+import { usePublicBrandingLoader } from "../root/usePublicBrandingLoader";
 import { LoginSkeleton } from "./LoginSkeleton";
 import { Notification } from "@/components/admin/notification";
 import { ConfirmationRequired } from "./ConfirmationRequired";
 import { SSOAuthButton } from "./SSOAuthButton";
 
 export const SignupPage = () => {
+  usePublicBrandingLoader();
   const queryClient = useQueryClient();
   const dataProvider = useDataProvider<CrmDataProvider>();
   const {

@@ -1,8 +1,10 @@
 import { Notification } from "@/components/admin/notification";
 import { useTranslate } from "ra-core";
 import { useConfigurationContext } from "../root/ConfigurationContext";
+import { usePublicBrandingLoader } from "../root/usePublicBrandingLoader";
 
 export const ConfirmationRequired = () => {
+  usePublicBrandingLoader();
   const translate = useTranslate();
   const { darkModeLogo: logo, title } = useConfigurationContext();
 

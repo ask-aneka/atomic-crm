@@ -21,6 +21,15 @@ export interface ConfigurationContextValue {
   disableEmailPasswordAuthentication?: boolean;
 }
 
+/**
+ * Branding fields readable by unauthenticated pages via the
+ * `configuration_branding` view. All fields are optional: missing/empty values
+ * fall back to the code defaults applied by `useConfigurationContext`.
+ */
+export type PublicBranding = Partial<
+  Pick<ConfigurationContextValue, "title" | "darkModeLogo" | "lightModeLogo">
+>;
+
 export const useConfigurationContext = () => {
   const [config] = useStore<ConfigurationContextValue>(
     CONFIGURATION_STORE_KEY,
