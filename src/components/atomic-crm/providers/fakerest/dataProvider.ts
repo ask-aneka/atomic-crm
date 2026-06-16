@@ -19,7 +19,10 @@ import type {
   SignUpData,
   Task,
 } from "../../types";
-import type { ConfigurationContextValue } from "../../root/ConfigurationContext";
+import type {
+  ConfigurationContextValue,
+  PublicBranding,
+} from "../../root/ConfigurationContext";
 import { getActivityLog } from "../commons/activity";
 import { getCompanyAvatar } from "../commons/getCompanyAvatar";
 import { getContactAvatar } from "../commons/getContactAvatar";
@@ -302,6 +305,17 @@ export const createDataProvider = ({
         id: 1,
       });
       return (data?.config as ConfigurationContextValue) ?? {};
+    },
+    getPublicBranding: async (): Promise<PublicBranding> => {
+      const { data } = await baseDataProvider.getOne("configuration", {
+        id: 1,
+      });
+      const config = (data?.config as ConfigurationContextValue) ?? {};
+      const branding: PublicBranding = {};
+      if (config.title) branding.title = config.title;
+      if (config.darkModeLogo) branding.darkModeLogo = config.darkModeLogo;
+      if (config.lightModeLogo) branding.lightModeLogo = config.lightModeLogo;
+      return branding;
     },
     updateConfiguration: async (
       config: ConfigurationContextValue,

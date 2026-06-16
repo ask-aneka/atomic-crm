@@ -132,3 +132,18 @@ select count(sub.id) as is_initialized
 from (
     select sales.id from public.sales limit 1
 ) sub;
+
+-- Anon-readable projection of the singleton configuration row exposing only the
+-- branding fields needed by unauthenticated pages (login, sign-up,
+-- forgot-password). `security_invoker = off` lets the view owner read the
+-- underlying row while callers stay `anon`; the column projection is the
+-- security boundary (the full `config` JSONB is never exposed). Same model as
+-- `init_state`.
+create or replace view public.configuration_branding with (security_invoker = off) as
+select
+    c.id,
+    c.config ->> 'title' as title,
+    c.config ->> 'darkModeLogo' as "darkModeLogo",
+    c.config ->> 'lightModeLogo' as "lightModeLogo"
+from public.configuration c
+where c.id = 1;

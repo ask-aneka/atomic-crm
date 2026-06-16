@@ -61,6 +61,12 @@ create policy "Task Update Policy" on public.tasks for update to authenticated u
 create policy "Task Delete Policy" on public.tasks for delete to authenticated using (true);
 
 -- Configuration (admin-only for writes)
+-- RLS on the configuration table is intentionally unchanged: anon has NO access
+-- to the full `config` JSONB. Unauthenticated branding is served exclusively by
+-- the `configuration_branding` view (see 03_views.sql / 06_grants.sql), which
+-- projects only title/darkModeLogo/lightModeLogo and is exposed to anon via
+-- `security_invoker = off` + explicit grants -- the same model as `init_state`,
+-- which likewise carries no view-level RLS policy.
 create policy "Enable read for authenticated" on public.configuration for select to authenticated using (true);
 create policy "Enable insert for admins" on public.configuration for insert to authenticated with check (public.is_admin());
 create policy "Enable update for admins" on public.configuration for update to authenticated using (public.is_admin()) with check (public.is_admin());

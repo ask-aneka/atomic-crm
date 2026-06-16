@@ -15,7 +15,10 @@ import type {
   SalesFormData,
   SignUpData,
 } from "../../types";
-import type { ConfigurationContextValue } from "../../root/ConfigurationContext";
+import type {
+  ConfigurationContextValue,
+  PublicBranding,
+} from "../../root/ConfigurationContext";
 import { ATTACHMENTS_BUCKET } from "../commons/attachments";
 import { getIsInitialized } from "./authProvider";
 import { getSupabaseClient } from "./supabase";
@@ -230,6 +233,26 @@ const getDataProviderWithCustomMethods = () => {
         id: 1,
       });
       return (data?.config as ConfigurationContextValue) ?? {};
+    },
+    async getPublicBranding(): Promise<PublicBranding> {
+      // Read the anon-accessible branding view directly (same direct-client
+      // pattern as getIsInitialized on init_state) so unauthenticated pages
+      // can render the customized title/logos before login.
+      const { data } = await getSupabaseClient()
+        .from("configuration_branding")
+        .select("title, darkModeLogo, lightModeLogo")
+        .maybeSingle();
+
+      if (!data) {
+        return {};
+      }
+
+      // Drop null/empty values so useConfigurationContext defaults still apply.
+      const branding: PublicBranding = {};
+      if (data.title) branding.title = data.title;
+      if (data.darkModeLogo) branding.darkModeLogo = data.darkModeLogo;
+      if (data.lightModeLogo) branding.lightModeLogo = data.lightModeLogo;
+      return branding;
     },
     async updateConfiguration(
       config: ConfigurationContextValue,

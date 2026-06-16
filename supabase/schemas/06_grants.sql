@@ -123,6 +123,11 @@ grant all on table public.init_state to anon;
 grant all on table public.init_state to authenticated;
 grant all on table public.init_state to service_role;
 
+-- Read-only branding view: select only (the view is read-only).
+grant select on table public.configuration_branding to anon;
+grant select on table public.configuration_branding to authenticated;
+grant select on table public.configuration_branding to service_role;
+
 -- Sequence grants
 grant all on sequence public.companies_id_seq to anon;
 grant all on sequence public.companies_id_seq to authenticated;

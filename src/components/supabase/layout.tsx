@@ -1,8 +1,10 @@
 import * as React from "react";
 import { Notification } from "@/components/admin/notification";
 import { useConfigurationContext } from "@/components/atomic-crm/root/ConfigurationContext";
+import { usePublicBrandingLoader } from "@/components/atomic-crm/root/usePublicBrandingLoader";
 
 export const Layout = ({ children }: React.PropsWithChildren) => {
+  usePublicBrandingLoader();
   const { darkModeLogo, title } = useConfigurationContext();
 
   return (
