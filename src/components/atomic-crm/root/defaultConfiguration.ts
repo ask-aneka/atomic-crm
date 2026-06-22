@@ -3,9 +3,9 @@ import type { ConfigurationContextValue } from "./ConfigurationContext";
 export const defaultDarkModeLogo = "./logos/logo_atomic_crm_dark.svg";
 export const defaultLightModeLogo = "./logos/logo_atomic_crm_light.svg";
 
-export const defaultCurrency = "USD";
+export const defaultCurrency = "GBP";
 
-export const defaultTitle = "Atomic CRM";
+export const defaultTitle = "Ask Aneka";
 
 export const defaultCompanySectors = [
   { value: "communication-services", label: "Communication Services" },
