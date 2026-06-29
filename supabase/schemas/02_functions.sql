@@ -283,13 +283,18 @@ DECLARE
   deal_record RECORD;
   merged_emails jsonb;
   merged_phones jsonb;
+  merged_addresses jsonb;
   merged_tags bigint[];
   winner_emails jsonb;
   loser_emails jsonb;
   winner_phones jsonb;
   loser_phones jsonb;
+  winner_addresses jsonb;
+  loser_addresses jsonb;
   email_map jsonb;
   phone_map jsonb;
+  address_map jsonb;
+  address_key text;
 BEGIN
   -- Fetch both contacts
   SELECT * INTO winner_contact FROM contacts WHERE id = winner_id;
@@ -391,6 +396,57 @@ BEGIN
   merged_phones := (SELECT jsonb_agg(value) FROM jsonb_each(phone_map));
   merged_phones := COALESCE(merged_phones, '[]'::jsonb);
 
+  -- Get address arrays
+  winner_addresses := COALESCE(winner_contact.address_jsonb, '[]'::jsonb);
+  loser_addresses := COALESCE(loser_contact.address_jsonb, '[]'::jsonb);
+
+  -- Merge addresses with deduplication by address fields
+  address_map := '{}'::jsonb;
+
+  -- Add winner addresses to map
+  IF jsonb_array_length(winner_addresses) > 0 THEN
+    FOR i IN 0..jsonb_array_length(winner_addresses)-1 LOOP
+      address_key := lower(concat_ws(
+        '|',
+        winner_addresses->i->>'street',
+        winner_addresses->i->>'city',
+        winner_addresses->i->>'state',
+        winner_addresses->i->>'postal_code',
+        winner_addresses->i->>'country'
+      ));
+      IF address_key <> '' THEN
+        address_map := address_map || jsonb_build_object(
+          address_key,
+          winner_addresses->i
+        );
+      END IF;
+    END LOOP;
+  END IF;
+
+  -- Add loser addresses to map (won't overwrite existing keys)
+  IF jsonb_array_length(loser_addresses) > 0 THEN
+    FOR i IN 0..jsonb_array_length(loser_addresses)-1 LOOP
+      address_key := lower(concat_ws(
+        '|',
+        loser_addresses->i->>'street',
+        loser_addresses->i->>'city',
+        loser_addresses->i->>'state',
+        loser_addresses->i->>'postal_code',
+        loser_addresses->i->>'country'
+      ));
+      IF address_key <> '' AND NOT address_map ? address_key THEN
+        address_map := address_map || jsonb_build_object(
+          address_key,
+          loser_addresses->i
+        );
+      END IF;
+    END LOOP;
+  END IF;
+
+  -- Convert map back to array
+  merged_addresses := (SELECT jsonb_agg(value) FROM jsonb_each(address_map));
+  merged_addresses := COALESCE(merged_addresses, '[]'::jsonb);
+
   -- Merge tags (remove duplicates)
   merged_tags := ARRAY(
     SELECT DISTINCT unnest(
@@ -409,6 +465,7 @@ BEGIN
     company_id = COALESCE(winner_contact.company_id, loser_contact.company_id),
     email_jsonb = merged_emails,
     phone_jsonb = merged_phones,
+    address_jsonb = merged_addresses,
     linkedin_url = COALESCE(winner_contact.linkedin_url, loser_contact.linkedin_url),
     background = COALESCE(winner_contact.background, loser_contact.background),
     has_newsletter = COALESCE(winner_contact.has_newsletter, loser_contact.has_newsletter),

@@ -49,7 +49,8 @@ create table public.contacts (
     sales_id bigint,
     linkedin_url text,
     email_jsonb jsonb,
-    phone_jsonb jsonb
+    phone_jsonb jsonb,
+    address_jsonb jsonb
 );
 
 create table public.contact_notes (

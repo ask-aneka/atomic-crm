@@ -12,6 +12,7 @@
 
 insert into public.agents (
   id,
+  atomic_crm_sales_id,
   agent_tone,
   ai_disclosure_rule,
   approved_closing_message,
@@ -56,6 +57,7 @@ insert into public.agents (
 )
 values
   (null,
+   1,
    'Friendly, practical, and reassuring.',
    'Use the word assistant in the greeting; disclose AI if the caller asks.',
    'Thanks, I''ve got the details. I''ll pass this to Tom so he can get back to you.',
@@ -98,6 +100,7 @@ values
    null,
    'Hey, I''m Aneka, you''re through to Fresh Coat Painting and Decorating. Tom can''t take the call. How can I help?'),
   ('+447782635240',
+   1,
    'Friendly, practical, and reassuring.',
    'Use the word assistant in the greeting; disclose AI if the caller asks.',
    'Thanks, I''ve got the details. I''ll pass this to Mike so he can get back to you.',
@@ -140,6 +143,7 @@ values
    'K4k9n8oWj5s31gNdXhwZ',
    'Hey, I''m Aneka, you''re through to Canopy Tree Surgeons. Mike can''t take the call. How can I help?'),
   ('+447868263525',
+   1,
    'Friendly, practical, and reassuring.',
    'Use the word assistant in the greeting; disclose AI if the caller asks.',
    'Thanks, I’ve got the details. I’ll pass this to Chris so they can get back to you.',
@@ -182,6 +186,7 @@ values
    'xLxDuABaY1E3bppnY3s7',
    'Hi, you’re through to ABC Plumbing & Heating. I’m helping Chris while they’re on a job. How can I help?'),
   ('agent_8801kv0gjkgvf8095ehswf1hkz1m',
+   1,
    'Friendly, practical, and reassuring.',
    'Use the word assistant in the greeting; disclose AI if the caller asks.',
    'Thanks, I’ve got the details. I’ll pass this to Steve so they can get back to you.',

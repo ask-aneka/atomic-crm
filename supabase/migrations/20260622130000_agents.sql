@@ -9,6 +9,7 @@
 
 create table public.agents (
   id                                  text,
+  atomic_crm_sales_id                 bigint,
   agent_tone                          varchar(255),
   ai_disclosure_rule                  varchar(255),
   approved_closing_message            varchar(255),

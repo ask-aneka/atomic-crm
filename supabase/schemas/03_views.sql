@@ -118,8 +118,17 @@ select
     co.linkedin_url,
     co.email_jsonb,
     co.phone_jsonb,
+    co.address_jsonb,
     (jsonb_path_query_array(co.email_jsonb, '$[*]."email"'))::text as email_fts,
     (jsonb_path_query_array(co.phone_jsonb, '$[*]."number"'))::text as phone_fts,
+    concat_ws(
+        ' ',
+        (jsonb_path_query_array(co.address_jsonb, '$[*]."street"'))::text,
+        (jsonb_path_query_array(co.address_jsonb, '$[*]."city"'))::text,
+        (jsonb_path_query_array(co.address_jsonb, '$[*]."state"'))::text,
+        (jsonb_path_query_array(co.address_jsonb, '$[*]."postal_code"'))::text,
+        (jsonb_path_query_array(co.address_jsonb, '$[*]."country"'))::text
+    ) as address_fts,
     c.name as company_name,
     count(distinct t.id) filter (where t.done_date is null) as nb_tasks
 from public.contacts co
