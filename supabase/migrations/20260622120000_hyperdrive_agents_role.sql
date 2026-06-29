@@ -50,4 +50,4 @@ end;
 $$;
 
 comment on role hyperdrive_agents is
-  'Read-only Postgres login for Cloudflare Hyperdrive (call-init agent config). Password from vault secret hyperdrive_agents_password.';
+  'Read-only Postgres login for Cloudflare Hyperdrive (call-init agent config). Password from vault secret hyperdrive_agents_password';
