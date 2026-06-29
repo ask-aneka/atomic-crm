@@ -15,7 +15,7 @@ describe("ContactEdit", () => {
       page.viewport(1600, 900);
     });
 
-    it("shows empty email and phone inputs when the contact has none", async () => {
+    it("shows empty email, phone, and address inputs when the contact has none", async () => {
       const screen = await render(<ContactEditBasic silent />);
 
       // The form should display one empty email placeholder input
@@ -27,9 +27,12 @@ describe("ContactEdit", () => {
       await expect
         .element(screen.getByPlaceholder("Phone number"))
         .toBeInTheDocument();
+      await expect
+        .element(screen.getByPlaceholder("Street address"))
+        .toBeInTheDocument();
     });
 
-    it("does not submit empty email and phone entries", async () => {
+    it("does not submit empty email, phone, and address entries", async () => {
       const updateMock = vi.fn().mockResolvedValue({ data: {} });
       const screen = await render(
         <ContactEditBasic
@@ -61,6 +64,7 @@ describe("ContactEdit", () => {
           data: expect.objectContaining({
             email_jsonb: null,
             phone_jsonb: null,
+            address_jsonb: null,
           }),
         }),
       );
@@ -107,7 +111,7 @@ describe("ContactEdit", () => {
       );
     });
 
-    it("preserves existing email and phone entries on edit", async () => {
+    it("preserves existing email, phone, and address entries on edit", async () => {
       const updateMock = vi.fn().mockResolvedValue({ data: {} });
       const screen = await render(
         <ContactEditWithEmailsAndPhones
@@ -122,6 +126,9 @@ describe("ContactEdit", () => {
 
       const phoneInput = screen.getByPlaceholder("Phone number");
       await expect.element(phoneInput).toHaveValue("0123456789");
+
+      const addressInput = screen.getByPlaceholder("Street address");
+      await expect.element(addressInput).toHaveValue("1 Infinite Loop");
 
       // Submit without changes
       await screen.getByRole("button", { name: /^save$/i }).click();
@@ -141,6 +148,16 @@ describe("ContactEdit", () => {
           data: expect.objectContaining({
             email_jsonb: [{ email: "ada@example.com", type: "Work" }],
             phone_jsonb: [{ number: "0123456789", type: "Work" }],
+            address_jsonb: [
+              {
+                street: "1 Infinite Loop",
+                city: "Cupertino",
+                state: "CA",
+                postal_code: "95014",
+                country: "USA",
+                type: "Work",
+              },
+            ],
           }),
         }),
       );
@@ -151,7 +168,7 @@ describe("ContactEdit", () => {
       page.viewport(375, 667);
     });
 
-    it("shows empty email and phone inputs when the contact has none on mobile", async () => {
+    it("shows empty email, phone, and address inputs when the contact has none on mobile", async () => {
       const screen = await render(<ContactEditMobileBasic silent />);
 
       await screen.getByRole("button", { name: /edit/i }).click();
@@ -164,9 +181,12 @@ describe("ContactEdit", () => {
       await expect
         .element(screen.getByPlaceholder("Phone number"))
         .toBeInTheDocument();
+      await expect
+        .element(screen.getByPlaceholder("Street address"))
+        .toBeInTheDocument();
     });
 
-    it("does not submit empty email and phone entries on mobile", async () => {
+    it("does not submit empty email, phone, and address entries on mobile", async () => {
       const updateMock = vi.fn().mockResolvedValue({ data: {} });
       const screen = await render(
         <ContactEditMobileBasic
@@ -199,6 +219,7 @@ describe("ContactEdit", () => {
           data: expect.objectContaining({
             email_jsonb: null,
             phone_jsonb: null,
+            address_jsonb: null,
           }),
         }),
       );
@@ -246,7 +267,7 @@ describe("ContactEdit", () => {
       );
     });
 
-    it("preserves existing email and phone entries on edit on mobile", async () => {
+    it("preserves existing email, phone, and address entries on edit on mobile", async () => {
       const updateMock = vi.fn().mockResolvedValue({ data: {} });
       const screen = await render(
         <ContactEditMobileWithEmailsAndPhones
@@ -262,6 +283,9 @@ describe("ContactEdit", () => {
 
       const phoneInput = screen.getByPlaceholder("Phone number");
       await expect.element(phoneInput).toHaveValue("0123456789");
+
+      const addressInput = screen.getByPlaceholder("Street address");
+      await expect.element(addressInput).toHaveValue("1 Infinite Loop");
 
       // Submit without changes
       await screen.getByRole("button", { name: /^save$/i }).click();
@@ -281,6 +305,16 @@ describe("ContactEdit", () => {
           data: expect.objectContaining({
             email_jsonb: [{ email: "ada@example.com", type: "Work" }],
             phone_jsonb: [{ number: "0123456789", type: "Work" }],
+            address_jsonb: [
+              {
+                street: "1 Infinite Loop",
+                city: "Cupertino",
+                state: "CA",
+                postal_code: "95014",
+                country: "USA",
+                type: "Work",
+              },
+            ],
           }),
         }),
       );

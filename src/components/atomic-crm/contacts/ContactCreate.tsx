@@ -5,6 +5,7 @@ import { ContactInputs } from "./ContactInputs";
 import { FormToolbar } from "../layout/FormToolbar";
 import {
   cleanupContactForCreate,
+  defaultAddressJsonb,
   defaultEmailJsonb,
   defaultPhoneJsonb,
 } from "./contactModel";
@@ -29,6 +30,7 @@ export const ContactCreate = ({
               sales_id: identity?.id,
               email_jsonb: defaultEmailJsonb,
               phone_jsonb: defaultPhoneJsonb,
+              address_jsonb: defaultAddressJsonb,
             }}
           >
             <Card>

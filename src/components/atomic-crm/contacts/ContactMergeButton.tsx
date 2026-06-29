@@ -258,11 +258,19 @@ const ContactMergeDialog = ({ open, onClose }: ContactMergeDialogProps) => {
                       added
                     </li>
                   )}
+                  {loserContact.address_jsonb?.length > 0 && (
+                    <li>
+                      • {loserContact.address_jsonb.length} address
+                      {loserContact.address_jsonb.length !== 1 ? "es" : ""} will
+                      be added
+                    </li>
+                  )}
                   {!notesCount &&
                     !tasksCount &&
                     !dealsCount &&
                     !loserContact.email_jsonb?.length &&
-                    !loserContact.phone_jsonb?.length && (
+                    !loserContact.phone_jsonb?.length &&
+                    !loserContact.address_jsonb?.length && (
                       <li className="text-muted-foreground/60">
                         {translate(
                           "resources.contacts.merge.no_additional_data",

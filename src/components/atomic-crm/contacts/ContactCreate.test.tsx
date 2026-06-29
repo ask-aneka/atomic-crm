@@ -7,16 +7,19 @@ describe("ContactCreate", () => {
   beforeAll(() => {
     page.viewport(1600, 900);
   });
-  it("shows empty email and phone placeholder inputs", async () => {
+  it("shows empty email, phone, and address placeholder inputs", async () => {
     const screen = await render(<ContactCreateBasic />);
 
     await expect.element(screen.getByPlaceholder("Email")).toBeInTheDocument();
     await expect
       .element(screen.getByPlaceholder("Phone number"))
       .toBeInTheDocument();
+    await expect
+      .element(screen.getByPlaceholder("Street address"))
+      .toBeInTheDocument();
   });
 
-  it("does not submit empty email and phone entries", async () => {
+  it("does not submit empty email, phone, and address entries", async () => {
     const createMock = vi
       .fn()
       .mockImplementation(async (resource: string, params: any) => {
@@ -50,6 +53,7 @@ describe("ContactCreate", () => {
         data: expect.objectContaining({
           email_jsonb: null,
           phone_jsonb: null,
+          address_jsonb: null,
         }),
       }),
     );
@@ -85,6 +89,7 @@ describe("ContactCreate", () => {
         data: expect.objectContaining({
           email_jsonb: [{ email: "ada@example.com", type: "Work" }],
           phone_jsonb: null,
+          address_jsonb: null,
         }),
       }),
     );
@@ -122,6 +127,54 @@ describe("ContactCreate", () => {
         data: expect.objectContaining({
           email_jsonb: [{ email: "ada@example.com", type: "Work" }],
           phone_jsonb: [{ number: "+1234567890", type: "Work" }],
+          address_jsonb: null,
+        }),
+      }),
+    );
+  });
+
+  it("submits filled address entries as structured json", async () => {
+    const createMock = vi.fn().mockResolvedValue({ data: {} });
+
+    const screen = await render(
+      <ContactCreateBasic
+        silent
+        dataProvider={{
+          create: createMock,
+        }}
+      />,
+    );
+
+    await expect.element(screen.getByPlaceholder("Email")).toBeInTheDocument();
+
+    await screen.getByLabelText(/first name/i).fill("Ada");
+    await screen.getByLabelText(/last name/i).fill("Lovelace");
+    await screen.getByPlaceholder("Street address").fill("1 Infinite Loop");
+    await screen.getByPlaceholder("City").fill("Cupertino");
+    await screen.getByPlaceholder("State").fill("CA");
+    await screen.getByPlaceholder("Postal code").fill("95014");
+    await screen.getByPlaceholder("Country").fill("USA");
+
+    await screen.getByRole("button", { name: /^save$/i }).click();
+
+    await expect.poll(() => createMock).toBeCalledTimes(1);
+
+    expect(createMock).toBeCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        data: expect.objectContaining({
+          email_jsonb: null,
+          phone_jsonb: null,
+          address_jsonb: [
+            {
+              street: "1 Infinite Loop",
+              city: "Cupertino",
+              state: "CA",
+              postal_code: "95014",
+              country: "USA",
+              type: "Work",
+            },
+          ],
         }),
       }),
     );

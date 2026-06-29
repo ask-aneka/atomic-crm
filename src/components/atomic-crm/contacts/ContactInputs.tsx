@@ -195,6 +195,56 @@ const ContactPersonalInformationInputs = () => {
           />
         </SimpleFormIterator>
       </ArrayInput>
+      <ArrayInput source="address_jsonb" helperText={false}>
+        <SimpleFormIterator
+          disableReordering
+          disableClear
+          className="[&>ul>li]:border-b-0 [&>ul>li]:pb-0"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
+            <TextInput
+              source="street"
+              className="md:col-span-2"
+              helperText={false}
+              label={false}
+              placeholder={translate("resources.contacts.fields.street")}
+            />
+            <TextInput
+              source="city"
+              helperText={false}
+              label={false}
+              placeholder={translate("resources.contacts.fields.city")}
+            />
+            <TextInput
+              source="state"
+              helperText={false}
+              label={false}
+              placeholder={translate("resources.contacts.fields.state")}
+            />
+            <TextInput
+              source="postal_code"
+              helperText={false}
+              label={false}
+              placeholder={translate("resources.contacts.fields.postal_code")}
+            />
+            <TextInput
+              source="country"
+              helperText={false}
+              label={false}
+              placeholder={translate("resources.contacts.fields.country")}
+            />
+          </div>
+          <SelectInput
+            source="type"
+            helperText={false}
+            label={false}
+            optionText="name"
+            choices={personalInfoTypes}
+            defaultValue="Work"
+            className="w-24 min-w-24"
+          />
+        </SimpleFormIterator>
+      </ArrayInput>
       <TextInput
         source="linkedin_url"
         helperText={false}

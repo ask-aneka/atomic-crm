@@ -7,6 +7,7 @@ import { ContactInputs } from "./ContactInputs";
 import { FormToolbar } from "../layout/FormToolbar";
 import {
   cleanupContactForEdit,
+  defaultAddressJsonb,
   defaultEmailJsonb,
   defaultPhoneJsonb,
 } from "./contactModel";
@@ -35,6 +36,10 @@ const normalizeContactArrayFields = (record: Contact) => ({
     record.phone_jsonb && record.phone_jsonb.length > 0
       ? record.phone_jsonb
       : defaultPhoneJsonb,
+  address_jsonb:
+    record.address_jsonb && record.address_jsonb.length > 0
+      ? record.address_jsonb
+      : defaultAddressJsonb,
 });
 
 const ContactEditContent = () => {

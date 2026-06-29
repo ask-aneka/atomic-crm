@@ -380,6 +380,9 @@ export const useImportFromJson = (): [
             phone_jsonb: Array.isArray(dataToImport.phones)
               ? dataToImport.phones
               : undefined,
+            address_jsonb: Array.isArray(dataToImport.addresses)
+              ? dataToImport.addresses
+              : undefined,
             sales_id: dataToImport.sales_id
               ? idsMaps.sales[dataToImport.sales_id]
               : currentSale.id,
@@ -754,6 +757,14 @@ type ContactImport = {
   has_newsletter?: boolean;
   emails: Array<{ email: string; type: string }>;
   phones: Array<{ number: string; type: string }>;
+  addresses?: Array<{
+    street?: string;
+    city?: string;
+    state?: string;
+    postal_code?: string;
+    country?: string;
+    type: string;
+  }>;
   tags: Array<string>;
   created_at?: string;
   updated_at?: string;

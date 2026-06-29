@@ -148,6 +148,16 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
   const tags = await fetchRelatedRecords<Tag>(records, "tags", "tags");
 
   const contacts = records.map((contact) => {
+    const workAddress = contact.address_jsonb?.find(
+      (address) => address.type === "Work",
+    );
+    const homeAddress = contact.address_jsonb?.find(
+      (address) => address.type === "Home",
+    );
+    const otherAddress = contact.address_jsonb?.find(
+      (address) => address.type === "Other",
+    );
+
     const exportedContact = {
       ...contact,
       company:
@@ -175,9 +185,27 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
         ?.number,
       phone_jsonb: JSON.stringify(contact.phone_jsonb),
       phone_fts: undefined,
+      address_work_street: workAddress?.street,
+      address_work_city: workAddress?.city,
+      address_work_state: workAddress?.state,
+      address_work_postal_code: workAddress?.postal_code,
+      address_work_country: workAddress?.country,
+      address_home_street: homeAddress?.street,
+      address_home_city: homeAddress?.city,
+      address_home_state: homeAddress?.state,
+      address_home_postal_code: homeAddress?.postal_code,
+      address_home_country: homeAddress?.country,
+      address_other_street: otherAddress?.street,
+      address_other_city: otherAddress?.city,
+      address_other_state: otherAddress?.state,
+      address_other_postal_code: otherAddress?.postal_code,
+      address_other_country: otherAddress?.country,
+      address_jsonb: JSON.stringify(contact.address_jsonb),
+      address_fts: undefined,
     };
     delete exportedContact.email_fts;
     delete exportedContact.phone_fts;
+    delete exportedContact.address_fts;
     return exportedContact;
   });
   return jsonExport(contacts, {}, (_err: any, csv: string) => {

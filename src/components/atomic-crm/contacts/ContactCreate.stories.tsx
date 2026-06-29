@@ -31,6 +31,7 @@ export const ContactCreateBasic = ({
           id: 1,
           email_jsonb: [],
           phone_jsonb: [],
+          address_jsonb: [],
         }),
       ] as any,
     }}
@@ -50,6 +51,7 @@ export const ContactCreateBasicWithError = () => (
           id: 1,
           email_jsonb: [],
           phone_jsonb: [],
+          address_jsonb: [],
         }),
       ] as any,
     }}

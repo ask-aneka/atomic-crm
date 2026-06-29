@@ -15,6 +15,21 @@ export type ContactImportSchema = {
   phone_work: string;
   phone_home: string;
   phone_other: string;
+  address_work_street: string;
+  address_work_city: string;
+  address_work_state: string;
+  address_work_postal_code: string;
+  address_work_country: string;
+  address_home_street: string;
+  address_home_city: string;
+  address_home_state: string;
+  address_home_postal_code: string;
+  address_home_country: string;
+  address_other_street: string;
+  address_other_city: string;
+  address_other_state: string;
+  address_other_postal_code: string;
+  address_other_country: string;
   background: string;
   avatar: string;
   first_seen: string;
@@ -96,6 +111,21 @@ export function useContactImport() {
             phone_work,
             phone_home,
             phone_other,
+            address_work_street,
+            address_work_city,
+            address_work_state,
+            address_work_postal_code,
+            address_work_country,
+            address_home_street,
+            address_home_city,
+            address_home_state,
+            address_home_postal_code,
+            address_home_country,
+            address_other_street,
+            address_other_city,
+            address_other_state,
+            address_other_postal_code,
+            address_other_country,
             background,
             first_seen,
             last_seen,
@@ -115,6 +145,35 @@ export function useContactImport() {
               { number: phone_home, type: "Home" },
               { number: phone_other, type: "Other" },
             ].filter(({ number }) => number);
+            const address_jsonb = [
+              {
+                street: address_work_street,
+                city: address_work_city,
+                state: address_work_state,
+                postal_code: address_work_postal_code,
+                country: address_work_country,
+                type: "Work",
+              },
+              {
+                street: address_home_street,
+                city: address_home_city,
+                state: address_home_state,
+                postal_code: address_home_postal_code,
+                country: address_home_country,
+                type: "Home",
+              },
+              {
+                street: address_other_street,
+                city: address_other_city,
+                state: address_other_state,
+                postal_code: address_other_postal_code,
+                country: address_other_country,
+                type: "Other",
+              },
+            ].filter(
+              ({ street, city, state, postal_code, country }) =>
+                street || city || state || postal_code || country,
+            );
             const company = companyName?.trim()
               ? companies.get(companyName.trim())
               : undefined;
@@ -130,6 +189,7 @@ export function useContactImport() {
                 title,
                 email_jsonb,
                 phone_jsonb,
+                address_jsonb,
                 background,
                 first_seen: first_seen
                   ? new Date(first_seen).toISOString()

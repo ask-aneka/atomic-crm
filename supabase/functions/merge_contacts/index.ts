@@ -49,6 +49,22 @@ function mergeContactData(winner: Contact, loser: Contact) {
     (phone: any) => phone.number,
   );
 
+  const mergedAddresses = mergeObjectArraysUnique(
+    winner.address_jsonb || [],
+    loser.address_jsonb || [],
+    (address: any) =>
+      [
+        address.street,
+        address.city,
+        address.state,
+        address.postal_code,
+        address.country,
+      ]
+        .filter(Boolean)
+        .join("|")
+        .toLowerCase(),
+  );
+
   const selectedAvatar =
     winner.avatar && winner.avatar.src ? winner.avatar : loser.avatar;
 
@@ -61,6 +77,7 @@ function mergeContactData(winner: Contact, loser: Contact) {
     company_id: winner.company_id ?? loser.company_id,
     email_jsonb: JSON.stringify(mergedEmails) as any,
     phone_jsonb: JSON.stringify(mergedPhones) as any,
+    address_jsonb: JSON.stringify(mergedAddresses) as any,
     linkedin_url: winner.linkedin_url || loser.linkedin_url,
     background: winner.background ?? loser.background,
     has_newsletter: winner.has_newsletter ?? loser.has_newsletter,

@@ -81,6 +81,15 @@ export type PhoneNumberAndType = {
   type: "Work" | "Home" | "Other";
 };
 
+export type AddressAndType = {
+  street: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  country: string;
+  type: "Work" | "Home" | "Other";
+};
+
 export type Contact = {
   first_name: string;
   last_name: string;
@@ -98,6 +107,7 @@ export type Contact = {
   status: string;
   background: string;
   phone_jsonb: PhoneNumberAndType[];
+  address_jsonb: AddressAndType[];
   nb_tasks?: number;
   company_name?: string;
 } & Pick<RaRecord, "id">;

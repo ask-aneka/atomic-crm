@@ -176,6 +176,7 @@ async function createContact({
       background: "",
       email_jsonb: [],
       phone_jsonb: [],
+      address_jsonb: [],
     })
     .select("id")
     .single();

@@ -13,6 +13,7 @@ import { EditSheet } from "../misc/EditSheet";
 import { ContactInputs } from "./ContactInputs";
 import {
   cleanupContactForEdit,
+  defaultAddressJsonb,
   defaultEmailJsonb,
   defaultPhoneJsonb,
 } from "./contactModel";
@@ -38,6 +39,7 @@ export const ContactEditSheet = ({
       defaultValues={{
         email_jsonb: defaultEmailJsonb,
         phone_jsonb: defaultPhoneJsonb,
+        address_jsonb: defaultAddressJsonb,
       }}
       headerActions={<ContactEditMenuButton onOpenChange={onOpenChange} />}
     >

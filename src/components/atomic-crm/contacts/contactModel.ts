@@ -4,16 +4,31 @@ import type { Company, Contact, ContactGender } from "../types";
 
 export const defaultEmailJsonb = [{ email: null, type: null }];
 export const defaultPhoneJsonb = [{ number: null, type: null }];
+export const defaultAddressJsonb = [
+  {
+    street: null,
+    city: null,
+    state: null,
+    postal_code: null,
+    country: null,
+    type: null,
+  },
+];
 
 const cleanContactArrayFields = (data: Contact) => {
   const cleanedEmailJsonb =
     data.email_jsonb?.filter((e) => e.email != null) || [];
   const cleanedPhoneJsonb =
     data.phone_jsonb?.filter((p) => p.number != null) || [];
+  const cleanedAddressJsonb =
+    data.address_jsonb?.filter(
+      (a) => a.street || a.city || a.state || a.postal_code || a.country,
+    ) || [];
   return {
     ...data,
     phone_jsonb: cleanedPhoneJsonb.length > 0 ? cleanedPhoneJsonb : null,
     email_jsonb: cleanedEmailJsonb.length > 0 ? cleanedEmailJsonb : null,
+    address_jsonb: cleanedAddressJsonb.length > 0 ? cleanedAddressJsonb : null,
   };
 };
 
@@ -147,6 +162,17 @@ export function exportToVCard(
     contact.phone_jsonb.forEach((phoneObj) => {
       const type = phoneObj.type.toUpperCase();
       lines.push(`TEL;TYPE=${type}:${phoneObj.number}`);
+    });
+  }
+
+  // Addresses
+  if (contact.address_jsonb && contact.address_jsonb.length > 0) {
+    contact.address_jsonb.forEach((addressObj) => {
+      const type = addressObj.type.toUpperCase();
+      const street = [addressObj.street].filter(Boolean).join(" ");
+      lines.push(
+        `ADR;TYPE=${type}:;;${street};${addressObj.city || ""};${addressObj.state || ""};${addressObj.postal_code || ""};${addressObj.country || ""}`,
+      );
     });
   }
 

@@ -3,6 +3,7 @@ import { CreateSheet } from "../misc/CreateSheet";
 import { ContactInputs } from "./ContactInputs";
 import {
   cleanupContactForCreate,
+  defaultAddressJsonb,
   defaultEmailJsonb,
   defaultPhoneJsonb,
 } from "./contactModel";
@@ -26,6 +27,7 @@ export const ContactCreateSheet = ({
         sales_id: identity?.id,
         email_jsonb: defaultEmailJsonb,
         phone_jsonb: defaultPhoneJsonb,
+        address_jsonb: defaultAddressJsonb,
       }}
       transform={cleanupContactForCreate}
       open={open}

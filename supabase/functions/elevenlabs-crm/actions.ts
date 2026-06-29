@@ -36,7 +36,7 @@ export async function searchContact(
   const { data, error } = await supabaseAdmin
     .from("contacts_summary")
     .select(
-      "id, first_name, last_name, email_jsonb, phone_jsonb, company_name, sales_id",
+      "id, first_name, last_name, email_jsonb, phone_jsonb, address_jsonb, company_name, sales_id",
     )
     .eq("sales_id", salesId)
     .ilike("phone_fts", `%${normalizedPhone}%`)
@@ -59,6 +59,7 @@ export async function searchContact(
       last_name: data.last_name,
       email_jsonb: data.email_jsonb,
       phone_jsonb: data.phone_jsonb,
+      address_jsonb: data.address_jsonb,
       company_name: data.company_name,
       sales_id: data.sales_id,
     },

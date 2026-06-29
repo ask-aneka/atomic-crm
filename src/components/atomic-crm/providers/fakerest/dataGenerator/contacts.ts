@@ -1,4 +1,5 @@
 import {
+  address,
   company as fakerCompany,
   internet,
   lorem,
@@ -50,6 +51,16 @@ export const generateContacts = (db: Db, size = 500): Required<Contact>[] => {
         type: getRandomContactDetailsType(),
       },
     ];
+    const address_jsonb = [
+      {
+        street: address.streetAddress(),
+        city: address.city(),
+        state: address.stateAbbr(),
+        postal_code: address.zipCode(),
+        country: address.country(),
+        type: getRandomContactDetailsType(),
+      },
+    ];
     const avatar = {
       src: has_avatar
         ? "https://marmelab.com/posters/avatar-" +
@@ -83,6 +94,7 @@ export const generateContacts = (db: Db, size = 500): Required<Contact>[] => {
       company_name: company.name,
       email_jsonb,
       phone_jsonb,
+      address_jsonb,
       background: lorem.sentence(),
       acquisition: random.arrayElement(["inbound", "outbound"]),
       avatar,

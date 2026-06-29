@@ -107,6 +107,12 @@ export const mergeContacts = async (
     (phone) => phone.number,
   );
 
+  const mergedAddresses = mergeObjectArraysUnique(
+    winnerContact.address_jsonb || [],
+    loserContact.address_jsonb || [],
+    getAddressKey,
+  );
+
   const winnerUpdate = dataProvider.update<Contact>("contacts", {
     id: winnerId,
     data: {
@@ -121,6 +127,7 @@ export const mergeContacts = async (
       company_id: winnerContact.company_id ?? loserContact.company_id,
       email_jsonb: mergedEmails,
       phone_jsonb: mergedPhones,
+      address_jsonb: mergedAddresses,
       linkedin_url: winnerContact.linkedin_url || loserContact.linkedin_url,
       background: winnerContact.background ?? loserContact.background,
       has_newsletter:
@@ -183,3 +190,15 @@ function mergeObjectArraysUnique<T>(
 
   return Array.from(map.values());
 }
+
+const getAddressKey = (address: Contact["address_jsonb"][number]) =>
+  [
+    address.street,
+    address.city,
+    address.state,
+    address.postal_code,
+    address.country,
+  ]
+    .filter(Boolean)
+    .join("|")
+    .toLowerCase();

@@ -32,6 +32,7 @@ export const ContactEditBasic = ({
           id: 1,
           email_jsonb: [],
           phone_jsonb: [],
+          address_jsonb: [],
         }),
       ],
     }}
@@ -59,6 +60,16 @@ export const ContactEditWithEmailsAndPhones = ({
           id: 1,
           email_jsonb: [{ email: "ada@example.com", type: "Work" }],
           phone_jsonb: [{ number: "0123456789", type: "Work" }],
+          address_jsonb: [
+            {
+              street: "1 Infinite Loop",
+              city: "Cupertino",
+              state: "CA",
+              postal_code: "95014",
+              country: "USA",
+              type: "Work",
+            },
+          ],
         }),
       ],
     }}
@@ -80,6 +91,7 @@ export const ContactEditWithError = () => (
           id: 1,
           email_jsonb: [],
           phone_jsonb: [],
+          address_jsonb: [],
         }),
       ] as any,
     }}

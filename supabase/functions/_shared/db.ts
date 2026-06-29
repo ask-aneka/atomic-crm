@@ -25,6 +25,7 @@ export interface ContactsTable {
   title: string | null;
   email_jsonb: unknown | null; // JSONB array
   phone_jsonb: unknown | null; // JSONB array
+  address_jsonb: unknown | null; // JSONB array
   background: string | null;
   avatar: unknown | null; // JSONB
   first_seen: Date | null;

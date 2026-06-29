@@ -57,6 +57,7 @@ export const buildContact = (overrides: Partial<Contact> = {}): Contact => ({
   background: "",
   company_id: null,
   company_name: undefined,
+  address_jsonb: [],
   email_jsonb: [{ email: "ada@example.com", type: "Work" }],
   first_name: "Ada",
   first_seen: "2025-01-01T09:00:00.000Z",
