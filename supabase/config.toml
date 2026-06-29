@@ -36,6 +36,14 @@ default_pool_size = 20
 # Maximum number of client connections allowed.
 max_client_conn = 100
 
+[db.vault]
+# Login password for the hyperdrive_agents Postgres role (Cloudflare Hyperdrive).
+hyperdrive_agents_password = "env(HYPERDRIVE_AGENTS_PASSWORD)"
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql", "./seeds/agents.sql"]
+
 [realtime]
 enabled = true
 # Bind realtime via either IPv4 or IPv6. (default: IPv6)

@@ -60,6 +60,7 @@ start-supabase-e2e: ## start a separate supabase instance for e2e (fresh DB ever
 	cp -r supabase/functions .supabase-e2e/supabase/functions
 	cp -r supabase/templates .supabase-e2e/supabase/templates
 	cp supabase/seed.sql .supabase-e2e/supabase/seed.sql
+	cp -r supabase/seeds .supabase-e2e/supabase/seeds
 	cp supabase/signing_keys.json .supabase-e2e/supabase/signing_keys.json
 	@$(call run-silent-tty,npx supabase start --workdir .supabase-e2e,supabase-e2e)
 
