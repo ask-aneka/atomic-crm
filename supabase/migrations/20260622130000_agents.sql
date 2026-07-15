@@ -4,64 +4,57 @@
 -- Lookup table for Cloudflare Worker call initiation (public.agents).
 -- Seed data is loaded separately.
 --
--- id may be null for the default fallback row (see Cloudflare worker lookup).
--- Postgres PRIMARY KEY cannot be null, so id uses a partial unique index instead.
+-- id is the lookup key: phone number, ElevenLabs agent id, or 'default'
+-- for the fallback row (see Cloudflare worker lookup).
 
 create table public.agents (
-  id                                  text,
-  atomic_crm_sales_id                 bigint,
-  agent_tone                          varchar(255),
-  ai_disclosure_rule                  varchar(255),
-  approved_closing_message            varchar(255),
-  availability_approved_answer        varchar(255),
-  bad_enquiry_criteria                varchar(255),
-  business_description                varchar(255),
-  business_name                       varchar(255),
-  calendar_or_booking_system          varchar(255),
-  call_ending_next_step               varchar(255),
-  credentials_approved_answer         varchar(255),
-  custom_agent_introduction           varchar(255),
-  end_of_call_action                  varchar(255),
-  example_agent_tone                  varchar(255),
-  excluded_areas                      varchar(255),
-  forbidden_phrases                   varchar(255),
-  good_enquiry_criteria               varchar(255),
-  key_selling_points                  varchar(255),
-  opening_hours_approved_answer       varchar(255),
-  optional_customer_details           varchar(255),
-  owner_name                          varchar(255),
-  payment_approved_answer             varchar(255),
-  pricing_approved_answer             varchar(255),
-  pricing_permission_level            varchar(255),
-  pricing_rules                       varchar(255),
-  qualifications_and_credentials      varchar(255),
-  quote_approved_answer               varchar(255),
-  required_caution_phrases            varchar(255),
-  required_customer_details           varchar(255),
-  response_timeframe                  varchar(255),
-  service_area_approved_answer        varchar(255),
-  service_areas                       varchar(255),
-  services_not_offered                varchar(255),
-  services_offered                    varchar(255),
-  trade_or_business_type              varchar(255),
-  typical_availability                varchar(255),
-  urgent_availability_rules           varchar(255),
-  urgent_or_safety_critical_scenarios varchar(255),
-  working_days_and_hours              varchar(255),
+  id                                  text primary key,
+  atomic_crm_sales_id                 bigint default 1,
+  agent_tone                          text,
+  ai_disclosure_rule                  text,
+  approved_closing_message            text,
+  availability_approved_answer        text,
+  bad_enquiry_criteria                text,
+  business_description                text,
+  business_name                       text,
+  calendar_or_booking_system          text,
+  call_ending_next_step               text,
+  credentials_approved_answer         text,
+  custom_agent_introduction           text,
+  end_of_call_action                  text,
+  example_agent_tone                  text,
+  excluded_areas                      text,
+  forbidden_phrases                   text,
+  good_enquiry_criteria               text,
+  key_selling_points                  text,
+  opening_hours_approved_answer       text,
+  optional_customer_details           text,
+  owner_name                          text,
+  payment_approved_answer             text,
+  pricing_approved_answer             text,
+  pricing_permission_level            text,
+  pricing_rules                       text,
+  qualifications_and_credentials      text,
+  quote_approved_answer               text,
+  required_caution_phrases            text,
+  required_customer_details           text,
+  response_timeframe                  text,
+  service_area_approved_answer        text,
+  service_areas                       text,
+  services_not_offered                text,
+  services_offered                    text,
+  trade_or_business_type              text,
+  typical_availability                text,
+  urgent_availability_rules           text,
+  urgent_or_safety_critical_scenarios text,
+  working_days_and_hours              text,
   business_whatsapp_no                text,
   agent_voice_id                      text,
   agent_first_message                 text
 );
 
 comment on table public.agents is
-  'ElevenLabs call-init agent configuration keyed by phone number, agent id, or null default row.';
-
-create unique index agents_id_key
-  on public.agents (id)
-  where id is not null;
-
-create index agents_id_lookup_idx
-  on public.agents (id);
+  'ElevenLabs call-init agent configuration keyed by phone number, agent id, or ''default'' fallback row.';
 
 -- =====================================================
 -- PERMISSIONS & RLS
